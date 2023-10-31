@@ -1,8 +1,11 @@
 import requests
 import os
 import logging
+from dotenv import load_dotenv
 from telegram import Update
 from telegram.ext import Updater, CommandHandler, MessageHandler, ConversationHandler, CallbackContext, Filters
+
+load_dotenv()
 
 # Estados de la conversación
 SELECTING_PROMPT = 0
@@ -17,7 +20,7 @@ def start(update: Update, context: CallbackContext):
     return SELECTING_PROMPT
 
 def set_prompt(update: Update, context: CallbackContext):
-    API_URL = os.environ["API_URL"]
+    API_URL = os.getenv("API_URL")
 
     global user_prompt
     user_prompt = update.message.text
@@ -46,7 +49,7 @@ def cancel(update: Update, context: CallbackContext):
 
 def main():
     # Inicializa el bot de Telegram.
-    TOKEN = os.environ["TELEGRAM_TOKEN"]
+    TOKEN = os.getenv("TELEGRAM_TOKEN")
     updater = Updater(TOKEN, use_context=True)
     dispatcher = updater.dispatcher
 
